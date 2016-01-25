@@ -12,96 +12,97 @@ namespace qwantmailer;
 class Mailer
 {
     public $CRLF = "\r\n";
-    public $host = 'smtp.mail.ru';
-    public $port = 587;
-    public $smtp_username = 'sergeyhdd@mail.ru';
-    public $smtp_password = 'kansai50mai';
+    public $host;
+    public $port;
+    public $smtp_username;
+    public $smtp_password;
+    public $mailFrom;
+    public $doDebug = 5;
     public $error;
-    public $do_debug = 5;
     public $connect;
-    public $to;
     public $subject;
     public $message;
     public $headers;
 
-    public function set($to = '', $subject = '', $message = '', $headers = ''){
-        $this->to = $to;
-        $this->subject = $subject;
-        $this->message = $message;
-        $this->headers = $headers;
+    /**
+     * @param $host string
+     * @param $port int
+     * @param $smtp_username string
+     * @param $smtp_password string
+     * @param $mailFrom string email address
+     */
+    public function __Construct($host, $port, $smtp_username, $smtp_password, $mailFrom)
+    {
+        $this->host = $host;
+        $this->port = $port;
+        $this->smtp_password = $smtp_password;
+        $this->smtp_username = $smtp_username;
+        $this->mailFrom = $mailFrom;
     }
 
-    public function sendCommand($command){
+    public function sendCommand($command, $printEcho = false)
+    {
         if ($this->connect) {
             fputs($this->connect, $command . $this->CRLF);
-            if($this->do_debug >= 1) {
+            if ($this->doDebug >= 1) {
                 echo '<span style="color : green">' . htmlspecialchars($command) . '</span><br>';
-            }
-        }
-        else {
+                if ($printEcho) {
+                    echo $this->get_lines() . '<br>';
+                }
+            };
+        } else {
             echo '<span style="color : red">connection lost!</span>';
         }
     }
 
-    public function sendMail()
+    public function sendMail($mailTo, $message)
     {
-        //SendMail("", "sam@dclink.com.ua", "DC-Link", "info@dclink.com.ua", "Trying to sent mailing list from$reason Тема:".$subject, $message, $headers, $baseaddr);
-        //mail($this->to, $this->subject, $this->message, "From: webmaster@com.ua\r\n");
         $errno = $errstr = '';
-        if ($this->connect = fsockopen($this->host,$this->port, $error, $error, 30)) {
+        if ($this->connect = fsockopen($this->host, $this->port, $error, $error, 30)) {
             stream_set_timeout($this->connect, 1);
-            echo '<span style="color : green">Connected to: '. $this->host . ':' . $this->port . '</span><br>';
+            echo '<span style="color : green">Connected to: ' . $this->host . ':' . $this->port . '</span><br>';
+            // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
             echo $this->get_lines() . '<br>';
 
-            $this->sendCommand('STARTTLS');
-            echo $this->get_lines() . '<br>';
+            $this->sendCommand('STARTTLS', true);
+            // expectedResult = 220 2.0.0 Start TLS
             stream_socket_enable_crypto($this->connect, true, STREAM_CRYPTO_METHOD_SSLv23_CLIENT);
 
-            $this->sendCommand('HELO ' . $_SERVER["SERVER_NAME"]);
-            echo $this->get_lines() . '<br>';
-
-
+            // HELO/EHLO  command for greeting with server
+            $this->sendCommand('HELO ' . $_SERVER["SERVER_NAME"], true);
 
             $this->sendCommand('AUTH LOGIN');
             $temp = $this->get_lines();
-            echo substr($temp,0,4) . base64_decode(substr($temp,3)) . '<br><br>';
+            echo substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br><br>';
 
             $this->sendCommand(base64_encode($this->smtp_username));
             $temp = $this->get_lines();
-            echo substr($temp,0,4) . base64_decode(substr($temp,3)) . '<br><br>';
+            echo substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br><br>';
 
-            $this->sendCommand(base64_encode($this->smtp_password));
-            echo $this->get_lines() . '<br>';
+            $this->sendCommand(base64_encode($this->smtp_password), true);
 
+            $this->sendCommand('MAIL FROM: <' . $this->mailFrom . '>', true);
 
+            $this->sendCommand('RCPT TO: <' . $mailTo . '>', true);
 
-            $this->sendCommand('MAIL FROM: <sergeyhdd@mail.ru>');
-            echo $this->get_lines() . '<br>';
+            $this->sendCommand('DATA', true);
 
+            $this->sendCommand($message, true);
 
+            $this->sendCommand('.', true);
 
-            $this->sendCommand('RCPT TO: <qwantonline@gmail.com>');
-            echo $this->get_lines() . '<br>';
-
-            $this->sendCommand('DATA');
-            echo $this->get_lines() . '<br>';
-
-            $this->sendCommand('Test message!');
-            echo $this->get_lines() . '<br>';
-
-            $this->sendCommand('.');
-            echo $this->get_lines() . '<br>';
-
-            $this->sendCommand('QUIT');
-            echo $this->get_lines() . '<br>';
+            $this->sendCommand('QUIT', true);
             fclose($this->connect);
-        }
-        exit;
+
+            return true;
+        };
+        return false;
     }
 
-    private function get_lines() {
+    private function get_lines()
+    {
         $data = '';
-        while($str = fgets($this->connect,255)) {
+        while ($str = fgets($this->connect, 255)) {
             $data .= $str . '<br>';
         }
         return $data;
