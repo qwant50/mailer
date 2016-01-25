@@ -6,7 +6,7 @@
  * Time: 21:57
  */
 
-$mymail = new \qwwantmailer\Mailer();
+$mymail = new \qwantmailer\Mailer();
 $mymail->set('qwantonline@gmail.com','subject','body', "From: webmaster@com.ua\r\n");
 $mymail->sendMail();
 

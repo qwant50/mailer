@@ -7,7 +7,7 @@
  * Time: 21:58
  */
 
-namespace qwwantmailer;
+namespace qwantmailer;
 
 class Mailer
 {
