@@ -62,7 +62,7 @@ class Mailer
     {
         $errno = $errstr = '';
         if ($this->connect = fsockopen($this->host, $this->port, $error, $error, 30)) {
-           // stream_set_timeout($this->connect, 1);
+            // stream_set_timeout($this->connect, 1);
             echo '<span style="color : green">Connected to: ' . $this->host . ':' . $this->port . '</span><br>';
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
             echo $this->get_lines() . '<br>';
@@ -126,7 +126,7 @@ class Mailer
             if ($info['timed_out']) {
                 break;
             }
-            // Now check if reads took too long
+            // Now check if reads took too long  EXTRA!!
             if ($endtime and time() > $endtime) {
                 break;
             }
