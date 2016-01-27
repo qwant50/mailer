@@ -6,11 +6,10 @@
  * Time: 21:57
  */
 
-require_once __DIR__ . '/src/config/config.php';
-
 $loader = require __DIR__ . '/vendor/autoload.php';
 
-$mymail = new \qwantmailer\Mailer('smtp.mail.ru', 587, 'sergeyhdd@mail.ru', 'kansai50mai', 'sergeyhdd@mail.ru');
+$config = new  \qwantmailer\config\config();
+$mymail = new \qwantmailer\Mailer($config->host, $config->port, $config->smtp_username, $config->smtp_password, $config->mailFrom);
 
-$mymail->sendMail('qwantonline@gmail.com', 'Test message from mailer module2!');
+$mymail->sendMail('qwantonline@gmail.com', 'Test message from mailer module3!');
 
