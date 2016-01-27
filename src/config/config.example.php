@@ -5,3 +5,5 @@
  * Date: 27-Jan-16
  * Time: 14:30
  */
+
+define (HOST, 'fgfdgdg');
