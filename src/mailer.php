@@ -24,6 +24,9 @@ class Mailer
     public $message;
     public $headers;
 
+    public $Timelimit = 1;
+    public $Timeout;
+
     /**
      * @param $host string
      * @param $port int
@@ -59,7 +62,7 @@ class Mailer
     {
         $errno = $errstr = '';
         if ($this->connect = fsockopen($this->host, $this->port, $error, $error, 30)) {
-            stream_set_timeout($this->connect, 1);
+           // stream_set_timeout($this->connect, 1);
             echo '<span style="color : green">Connected to: ' . $this->host . ':' . $this->port . '</span><br>';
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
             echo $this->get_lines() . '<br>';
@@ -69,7 +72,7 @@ class Mailer
             stream_socket_enable_crypto($this->connect, true, STREAM_CRYPTO_METHOD_SSLv23_CLIENT);
 
             // HELO/EHLO  command for greeting with server
-            $this->sendCommand('HELO ' . $_SERVER["SERVER_NAME"], true);
+            $this->sendCommand('EHLO ' . $_SERVER["SERVER_NAME"], true);
 
             $this->sendCommand('AUTH LOGIN');
             $temp = $this->get_lines();
@@ -101,9 +104,32 @@ class Mailer
 
     private function get_lines()
     {
+        // If the connection is bad, give up straight away
+        if (!is_resource($this->connect)) {
+            return '';
+        }
         $data = '';
-        while ($str = fgets($this->connect, 255)) {
+        $endtime = 0;
+        stream_set_timeout($this->connect, 1);
+        if ($this->Timelimit > 0) {
+            $endtime = time() + $this->Timelimit;
+        }
+        while (is_resource($this->connect) && !feof($this->connect)) {
+            $str = @fgets($this->connect, 515);
             $data .= $str . '<br>';
+            // If 4th character is a space, we are done reading, break the loop, micro-optimisation over strlen
+            if ((isset($str[3]) and $str[3] == ' ')) {
+                break;
+            }
+            // Timed-out? Log and break
+            $info = stream_get_meta_data($this->connect);
+            if ($info['timed_out']) {
+                break;
+            }
+            // Now check if reads took too long
+            if ($endtime and time() > $endtime) {
+                break;
+            }
         }
         return $data;
     }
