@@ -76,7 +76,7 @@ class Mailer extends Config
             // password send in base64
             $this->sendCommand(base64_encode($this->smtp_password));
 
-            $this->sendCommand('MAIL FROM: <' . $this->mailFrom . '>');
+            $this->sendCommand('MAIL FROM: <' . $this->mailFrom . '>');  // Return-Path
 
             $this->sendCommand('RCPT TO: <' . $mailTo . '>');
 

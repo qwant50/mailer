@@ -14,7 +14,6 @@ $loader = require __DIR__ . '/vendor/autoload.php';
 
 $mailSMTP = new \qwantmailer\Mailer();
 
-$mailSMTP->headers['Return-Path'] = 'sergeyhdd@mail.ru';
 $mailSMTP->headers['Error-to'] = 'sergeyhdd@mail.ru';
 $mailSMTP->headers['Subject'] = 'Must to WORK!';
 $mailSMTP->headers['To'] = 'qwantonline@gmail.com';
