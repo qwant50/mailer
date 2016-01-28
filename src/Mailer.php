@@ -14,22 +14,21 @@ use qwantmailer\config\Config;
 class Mailer extends Config
 {
     public $CRLF = "\r\n";
-    public $error;
     public $connect;
     public $subject;
     public $message;
     public $headers;
 
-    public $Timelimit = 1;
+    public $Timelimit = 2;
     public $Timeout;
 
     /**
-     * @param $host string
-     * @param $port int
-     * @param $smtp_username string
-     * @param $smtp_password string
-     * @param $mailFrom string email address
-     * @param $debug int 0 - no meesages, >0 - debug messages
+     * @param $host @var String
+     * @param $port @var Integer
+     * @param $smtp_username @var String
+     * @param $smtp_password @var String
+     * @param $mailFrom @var String email address
+     * @param $debug @var Integer 0 - no meesages, 1 - info messages, 2 - info & error messages
      */
     public function __Construct($host, $port, $smtp_username, $smtp_password, $mailFrom, $debug)
     {
@@ -41,14 +40,14 @@ class Mailer extends Config
         $this->debug = $debug;
     }
 
-    public function echoInfo($infoMessage)
+    private function echoInfo($infoMessage)
     {
         if ($this->debug > 0) {
             echo $infoMessage;
         }
     }
 
-    public function sendCommand($command)
+    private function sendCommand($command)
     {
         if ($this->connect) {
             fputs($this->connect, $command . $this->CRLF);
