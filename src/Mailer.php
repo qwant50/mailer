@@ -82,9 +82,12 @@ class Mailer extends Config
 
             $this->sendCommand('DATA');
 
-            // $this->sendCommand('X-Return-Path: sergeyhdd@mail.ru');
-            // $this->sendCommand('Error-to: sergeyhdd@mail.ru');
-            // $this->sendCommand(''); // empty line to seporate headers from body
+            if ($this->headers) {
+                foreach ($this->headers as $key => $header):
+                    $this->sendCommand($key .': '. $header);
+                endforeach;
+                $this->sendCommand('');  // empty line to separate headers from body
+            }
 
             $this->sendCommand($message);
 
