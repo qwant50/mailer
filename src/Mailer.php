@@ -17,13 +17,13 @@ class Mailer
     public $smtp_username;
     public $smtp_password;
     public $mailFrom;
-    public $debug = 5;
     public $error;
     public $connect;
     public $subject;
     public $message;
     public $headers;
 
+    public $debug = 5;
     public $Timelimit = 1;
     public $Timeout;
 
@@ -85,12 +85,12 @@ class Mailer
             // HELO/EHLO  command for greeting with server
             $this->sendCommand('EHLO ' . $_SERVER["SERVER_NAME"]);
 
-            $temp = $this->sendCommand('AUTH LOGIN');
-            $this->echoInfo(substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br>');
+            $response = $this->sendCommand('AUTH LOGIN');
+            $this->echoInfo(substr($response, 0, 4) . base64_decode(substr($response, 3)) . '<br>');
 
             // username send in base64
-            $temp = $this->sendCommand(base64_encode($this->smtp_username));
-            $this->echoInfo(substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br>');
+            $response = $this->sendCommand(base64_encode($this->smtp_username));
+            $this->echoInfo(substr($response, 0, 4) . base64_decode(substr($response, 3)) . '<br>');
 
             // password send in base64
             $this->sendCommand(base64_encode($this->smtp_password));
