@@ -16,10 +16,15 @@
  *  $mailFrom = '*********@mail.ru';
  *
  */
-class config {
+
+namespace qwantmailer\Config;
+
+class Config
+{
     public $host = '';
     public $port = 587;
     public $smtp_username = '';
     public $smtp_password = '';
     public $mailFrom = '';
+    public $debug = 5;
 }

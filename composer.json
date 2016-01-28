@@ -10,7 +10,9 @@
   "minimum-stability": "dev",
   "require": {},
   "autoload": {
-    "psr-4": {"qwantmailer\\": "src/"}
+    "psr-4": {
+      "qwantmailer\\": "src/"
+    }
   },
   "version": "1.0.0"
 }

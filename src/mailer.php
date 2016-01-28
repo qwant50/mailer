@@ -17,7 +17,7 @@ class Mailer
     public $smtp_username;
     public $smtp_password;
     public $mailFrom;
-    public $doDebug = 5;
+    public $debug = 5;
     public $error;
     public $connect;
     public $subject;
@@ -34,27 +34,31 @@ class Mailer
      * @param $smtp_password string
      * @param $mailFrom string email address
      */
-    public function __Construct($host, $port, $smtp_username, $smtp_password, $mailFrom)
+    public function __Construct($host, $port, $smtp_username, $smtp_password, $mailFrom, $debag)
     {
         $this->host = $host;
         $this->port = $port;
         $this->smtp_password = $smtp_password;
         $this->smtp_username = $smtp_username;
         $this->mailFrom = $mailFrom;
+        $this->debug = $debag;
     }
 
-    public function sendCommand($command, $printEcho = false)
+    public function echoInfo($infoMessage)
+    {
+        if ($this->debug > 0) {
+            echo $infoMessage;
+        }
+    }
+
+    public function sendCommand($command)
     {
         if ($this->connect) {
             fputs($this->connect, $command . $this->CRLF);
-            if ($this->doDebug >= 1) {
-                echo '<span style="color : green">' . htmlspecialchars($command) . '</span><br>';
-                if ($printEcho) {
-                    echo $this->get_lines() . '<br>';
-                }
-            };
+            $this->echoInfo('<span style="color : green">' . htmlspecialchars($command) . '</span><br>');
+            $this->echoInfo($this->get_lines() . '<br>');
         } else {
-            echo '<span style="color : red">connection lost!</span>';
+            $this->echoInfo('<span style="color : red">connection lost!</span>');
         }
     }
 
@@ -62,39 +66,38 @@ class Mailer
     {
         $errno = $errstr = '';
         if ($this->connect = fsockopen($this->host, $this->port, $error, $error, 30)) {
-            // stream_set_timeout($this->connect, 1);
-            echo '<span style="color : green">Connected to: ' . $this->host . ':' . $this->port . '</span><br>';
+            $this->echoInfo('<span style="color : green">Connected to: ' . $this->host . ':' . $this->port . '</span><br>');
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
-            echo $this->get_lines() . '<br>';
+            $this->echoInfo($this->get_lines() . '<br>');
 
-            $this->sendCommand('STARTTLS', true);
+            $this->sendCommand('STARTTLS');
             // expectedResult = 220 2.0.0 Start TLS
             stream_socket_enable_crypto($this->connect, true, STREAM_CRYPTO_METHOD_SSLv23_CLIENT);
 
             // HELO/EHLO  command for greeting with server
-            $this->sendCommand('EHLO ' . $_SERVER["SERVER_NAME"], true);
+            $this->sendCommand('EHLO ' . $_SERVER["SERVER_NAME"]);
 
             $this->sendCommand('AUTH LOGIN');
             $temp = $this->get_lines();
-            echo substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br><br>';
+            $this->echoInfo(substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br>');
 
             $this->sendCommand(base64_encode($this->smtp_username));
             $temp = $this->get_lines();
-            echo substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br><br>';
+            $this->echoInfo(substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br>');
 
-            $this->sendCommand(base64_encode($this->smtp_password), true);
+            $this->sendCommand(base64_encode($this->smtp_password));
 
-            $this->sendCommand('MAIL FROM: <' . $this->mailFrom . '>', true);
+            $this->sendCommand('MAIL FROM: <' . $this->mailFrom . '>');
 
-            $this->sendCommand('RCPT TO: <' . $mailTo . '>', true);
+            $this->sendCommand('RCPT TO: <' . $mailTo . '>');
 
-            $this->sendCommand('DATA', true);
+            $this->sendCommand('DATA');
 
-            $this->sendCommand($message, true);
+            $this->sendCommand($message);
 
-            $this->sendCommand('.', true);
+            $this->sendCommand('.');
 
-            $this->sendCommand('QUIT', true);
+            $this->sendCommand('QUIT');
             fclose($this->connect);
 
             return true;
