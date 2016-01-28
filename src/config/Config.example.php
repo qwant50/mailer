@@ -19,9 +19,9 @@
 
 namespace qwantmailer\Config;
 
-class Config4
+class Config
 {
-    public $host = '';
+    public $host = '127.0.0.1';
     public $port = 587;
     public $smtp_username = '';
     public $smtp_password = '';

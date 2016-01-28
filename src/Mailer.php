@@ -9,21 +9,17 @@
 
 namespace qwantmailer;
 
-class Mailer
+use qwantmailer\config\Config;
+
+class Mailer extends Config
 {
     public $CRLF = "\r\n";
-    public $host;
-    public $port;
-    public $smtp_username;
-    public $smtp_password;
-    public $mailFrom;
     public $error;
     public $connect;
     public $subject;
     public $message;
     public $headers;
 
-    public $debug = 5;
     public $Timelimit = 1;
     public $Timeout;
 
@@ -35,14 +31,14 @@ class Mailer
      * @param $mailFrom string email address
      * @param $debug int 0 - no meesages, >0 - debug messages
      */
-    public function __Construct($host, $port, $smtp_username, $smtp_password, $mailFrom, $debag)
+    public function __Construct($host, $port, $smtp_username, $smtp_password, $mailFrom, $debug)
     {
         $this->host = $host;
         $this->port = $port;
         $this->smtp_password = $smtp_password;
         $this->smtp_username = $smtp_username;
         $this->mailFrom = $mailFrom;
-        $this->debug = $debag;
+        $this->debug = $debug;
     }
 
     public function echoInfo($infoMessage)
@@ -73,10 +69,11 @@ class Mailer
     public function sendMail($mailTo, $message)
     {
         $errno = $errstr = '';
-        if ($this->connect = fsockopen($this->host, $this->port, $error, $error, 30)) {
+        if ($this->connect = fsockopen($this->host, $this->port, $errno, $errstr, 30)) {
             $this->echoInfo('<span style="color : green">Connected to: ' . $this->host . ':' . $this->port . '</span><br>');
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
             $this->echoInfo($this->get_lines() . '<br>');
+
 
             $this->sendCommand('STARTTLS');
             // expectedResult = 220 2.0.0 Start TLS
@@ -101,6 +98,8 @@ class Mailer
 
             $this->sendCommand('DATA');
 
+          //  $this->sendCommand('X-Return-Path: sergeyhdd@mail.ru');
+          //  $this->sendCommand('Error-to: sergeyhdd@mail.ru');
             $this->sendCommand($message);
 
             $this->sendCommand('.');
