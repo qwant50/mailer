@@ -63,6 +63,11 @@ class Mailer
         }
     }
 
+    /**
+     * @param $mailTo string - receiver of email message
+     * @param $message string
+     * @return bool
+     */
     public function sendMail($mailTo, $message)
     {
         $errno = $errstr = '';
@@ -82,10 +87,12 @@ class Mailer
             $temp = $this->get_lines();
             $this->echoInfo(substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br>');
 
+            // username send in base64
             $this->sendCommand(base64_encode($this->smtp_username));
             $temp = $this->get_lines();
             $this->echoInfo(substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br>');
 
+            // password send in base64
             $this->sendCommand(base64_encode($this->smtp_password));
 
             $this->sendCommand('MAIL FROM: <' . $this->mailFrom . '>');
