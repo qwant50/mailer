@@ -12,7 +12,9 @@ ini_set('display_errors', 1);
 $loader = require __DIR__ . '/vendor/autoload.php';
 
 
-$myMail = new \qwantmailer\Mailer();
+$mailSMTP = new \qwantmailer\Mailer();
 
-$myMail->sendMail("qwantonline@gmail.com", "Hello! This is message!");  //"dasd_90@hotmail.com"
+$mailSMTP->headers['X-Return-Path'] = 'sergeyhdd@mail.ru';
+$mailSMTP->headers['Error-to'] = 'sergeyhdd@mail.ru';
+$mailSMTP->sendMail("dasd_90@hotmail.com", "Right headers. Please check.");  //"dasd_90@hotmail.com"
 

@@ -15,41 +15,33 @@ class Mailer extends Config
 {
     public $CRLF = "\r\n";
     public $connect;
-    public $subject;
-    public $message;
-    public $headers;
+    public $body;
+    public $headers = [];
 
     public $Timelimit = 2;
     public $Timeout;
-
-    /**
-     * @param $host @var String
-     * @param $port @var Integer
-     * @param $smtp_username @var String
-     * @param $smtp_password @var String
-     * @param $mailFrom @var String email address
-     * @param $debug @var Integer 0 - no meesages, 1 - info messages, 2 - info & error messages
-     */
 
     private function echoInfo($infoMessage)
     {
         if ($this->debug > 0) {
             echo $infoMessage;
         }
+        return $infoMessage;
     }
 
     private function sendCommand($command)
     {
+        $this->echoInfo('<span style="color : green">' . htmlspecialchars($command) . '</span><br>');
         if ($this->connect) {
             fputs($this->connect, $command . $this->CRLF);
             $response = $this->get_lines();
-            $this->echoInfo('<span style="color : green">' . htmlspecialchars($command) . '</span><br>');
             $this->echoInfo($response . '<br>');
         } else {
             $this->echoInfo('<span style="color : red">connection lost!</span>');
         }
         return $response;
     }
+
 
     /**
      * @param $mailTo string - receiver of email message
@@ -60,16 +52,18 @@ class Mailer extends Config
     {
         $errno = $errstr = '';
         if ($this->connect = fsockopen($this->host, $this->port, $errno, $errstr, 30)) {
-            $this->echoInfo('<span style="color : green">Connected to: ' . $this->host . ':' . $this->port . '</span><br>');
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
-            $this->echoInfo($this->get_lines() . '<br>');
+            if (substr($this->echoInfo($this->get_lines() . '<br>'), 0, 3) != '220') {
+                return false;
+            }
 
-
-            $this->sendCommand('STARTTLS');
             // expectedResult = 220 2.0.0 Start TLS
+            if (substr($this->sendCommand('STARTTLS'), 0, 3) != '220') {
+                return false;
+            };
             stream_socket_enable_crypto($this->connect, true, STREAM_CRYPTO_METHOD_SSLv23_CLIENT);
 
-            // HELO/EHLO  command for greeting with server
+            // HELO/EHLO  command for greeting with server  HELO = SMTP, EHLO = ESMTP.  EHLO is better.
             $this->sendCommand('EHLO ' . $_SERVER["SERVER_NAME"]);
 
             $response = $this->sendCommand('AUTH LOGIN');
@@ -88,8 +82,10 @@ class Mailer extends Config
 
             $this->sendCommand('DATA');
 
-          //  $this->sendCommand('X-Return-Path: sergeyhdd@mail.ru');
-          //  $this->sendCommand('Error-to: sergeyhdd@mail.ru');
+            // $this->sendCommand('X-Return-Path: sergeyhdd@mail.ru');
+            // $this->sendCommand('Error-to: sergeyhdd@mail.ru');
+            // $this->sendCommand(''); // empty line to seporate headers from body
+
             $this->sendCommand($message);
 
             $this->sendCommand('.');
