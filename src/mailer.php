@@ -33,6 +33,7 @@ class Mailer
      * @param $smtp_username string
      * @param $smtp_password string
      * @param $mailFrom string email address
+     * @param $debug int 0 - no meesages, >0 - debug messages
      */
     public function __Construct($host, $port, $smtp_username, $smtp_password, $mailFrom, $debag)
     {
