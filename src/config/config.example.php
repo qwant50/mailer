@@ -19,7 +19,7 @@
 
 namespace qwantmailer\Config;
 
-class Config
+class Config4
 {
     public $host = '';
     public $port = 587;
