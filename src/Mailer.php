@@ -30,15 +30,6 @@ class Mailer extends Config
      * @param $mailFrom @var String email address
      * @param $debug @var Integer 0 - no meesages, 1 - info messages, 2 - info & error messages
      */
-    public function __Construct($host, $port, $smtp_username, $smtp_password, $mailFrom, $debug)
-    {
-        $this->host = $host;
-        $this->port = $port;
-        $this->smtp_password = $smtp_password;
-        $this->smtp_username = $smtp_username;
-        $this->mailFrom = $mailFrom;
-        $this->debug = $debug;
-    }
 
     private function echoInfo($infoMessage)
     {
