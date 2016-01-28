@@ -56,11 +56,13 @@ class Mailer
     {
         if ($this->connect) {
             fputs($this->connect, $command . $this->CRLF);
+            $response = $this->get_lines();
             $this->echoInfo('<span style="color : green">' . htmlspecialchars($command) . '</span><br>');
-            $this->echoInfo($this->get_lines() . '<br>');
+            $this->echoInfo($response . '<br>');
         } else {
             $this->echoInfo('<span style="color : red">connection lost!</span>');
         }
+        return $response;
     }
 
     /**
@@ -83,13 +85,11 @@ class Mailer
             // HELO/EHLO  command for greeting with server
             $this->sendCommand('EHLO ' . $_SERVER["SERVER_NAME"]);
 
-            $this->sendCommand('AUTH LOGIN');
-            $temp = $this->get_lines();
+            $temp = $this->sendCommand('AUTH LOGIN');
             $this->echoInfo(substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br>');
 
             // username send in base64
-            $this->sendCommand(base64_encode($this->smtp_username));
-            $temp = $this->get_lines();
+            $temp = $this->sendCommand(base64_encode($this->smtp_username));
             $this->echoInfo(substr($temp, 0, 4) . base64_decode(substr($temp, 3)) . '<br>');
 
             // password send in base64
