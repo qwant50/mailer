@@ -17,7 +17,12 @@ $mailSMTP = new \qwantmailer\Mailer();
 $mailSMTP->headers['Error-to'] = 'sergeyhdd@mail.ru';
 $mailSMTP->headers['Subject'] = 'Must to WORK!';
 $mailSMTP->headers['To'] = 'qwantonline@gmail.com';
-$mailSMTP->body = 'Right headers. Please check. HA-ha-ha..';
+$mailSMTP->body = 'Right headers. Please check. HA-ha-ha..1';
 $mailSMTP->mailTo = 'qwantonline@gmail.com';
-$mailSMTP->sendMail();
+
+if ($mailSMTP->sendMail()) {
+    // Successful
+} else {
+    // Have an error!
+};
 
