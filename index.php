@@ -20,6 +20,7 @@ $mailSMTP->headers['To'] = 'qwantonline@gmail.com';
 $mailSMTP->body = 'Right headers. Please check. HA-ha-ha..1';
 $mailSMTP->mailTo = 'qwantonline@gmail.com';
 
+
 if ($mailSMTP->sendMail()) {
     // Successful
 } else {
