@@ -15,8 +15,10 @@ class Mailer extends Config
 {
     public $CRLF = "\r\n";
     public $connect;
-    public $body;
     public $headers = [];
+    public $body;
+    public $mailTo;
+
 
     public $Timelimit = 2;
     public $Timeout;
@@ -45,10 +47,9 @@ class Mailer extends Config
 
     /**
      * @param $mailTo string - receiver of email message
-     * @param $message string
      * @return bool
      */
-    public function sendMail($mailTo, $message)
+    public function sendMail()
     {
         $errno = $errstr = '';
         if ($this->connect = fsockopen($this->host, $this->port, $errno, $errstr, 30)) {
@@ -78,7 +79,7 @@ class Mailer extends Config
 
             $this->sendCommand('MAIL FROM: <' . $this->mailFrom . '>');  // Return-Path
 
-            $this->sendCommand('RCPT TO: <' . $mailTo . '>');
+            $this->sendCommand('RCPT TO: <' . $this->mailTo . '>');
 
             $this->sendCommand('DATA');
 
@@ -89,9 +90,12 @@ class Mailer extends Config
                 $this->sendCommand('');  // empty line to separate headers from body
             }
 
-            $this->sendCommand($message);
+            $this->sendCommand($this->body);
 
-            $this->sendCommand('.');
+            // expectedResult = 250 OK id=1aOrwv-00040C-2x
+            if (substr($this->sendCommand('.'), 0, 3) != '250') {
+                return false;
+            };
 
             $this->sendCommand('QUIT');
             fclose($this->connect);
