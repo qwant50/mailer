@@ -1,6 +1,7 @@
 {
   "name": "qwant50/mailermodule",
   "description": "Mailer module.",
+  "type": "library",
   "authors": [
     {
       "name": "qwant50",
@@ -14,5 +15,5 @@
       "qwantmailer\\": "src/"
     }
   },
-  "version": "1.0.0"
+  "license": "MIT"
 }
