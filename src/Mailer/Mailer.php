@@ -7,7 +7,7 @@
  * Time: 21:58
  */
 
-namespace qwantmailer;
+namespace Qwant\Mailer;
 
 class Mailer
 {
@@ -17,7 +17,6 @@ class Mailer
     public $mailTo;
     public $headers = [];
     public $body;
-
 
     public $Timelimit = 2;
     public $Timeout;
@@ -69,8 +68,10 @@ class Mailer
      */
     public function sendMail()
     {
+ /*       if ($this->options['mailer']['host'] == ''){
+            //throw new \Exception('Error mail send: Host isn\'t defined');
+        }*/
         $errno = $errstr = '';
-        var_dump($this->options['mailer']);
         if ($this->connect = fsockopen($this->options['mailer']['host'], $this->options['mailer']['port'], $errno, $errstr, 30)) {
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
             if (substr($this->echoInfo($this->get_lines() . '<br>'), 0, 3) != '220') {

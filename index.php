@@ -11,12 +11,14 @@ ini_set('display_errors', 1);
 
 $loader = require __DIR__ . '/vendor/autoload.php';
 
+$mailSMTP = new \Qwant\Mailer\Mailer();
 
-$mailSMTP = new \qwantmailer\Mailer();
-
+// This is optional headers for example only
 $mailSMTP->headers['Error-to'] = 'sergeyhdd@mail.ru';
 $mailSMTP->headers['Subject'] = 'Must to WORK!';
 $mailSMTP->headers['To'] = 'qwantonline@gmail.com';
+
+// Body & mailTo MUST!
 $mailSMTP->body = 'Right headers. Please check. HA-ha-ha..1';
 $mailSMTP->mailTo = 'qwantonline@gmail.com';
 

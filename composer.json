@@ -1,5 +1,5 @@
 {
-  "name": "qwant50/mailermodule",
+  "name": "qwant50/mailer",
   "description": "Mailer module.",
   "type": "library",
   "authors": [
@@ -12,7 +12,7 @@
   "require": {},
   "autoload": {
     "psr-4": {
-      "qwantmailer\\": "src/"
+      "Qwant\\": "src/"
     }
   },
   "license": "MIT"

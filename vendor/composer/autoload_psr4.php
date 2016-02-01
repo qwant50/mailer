@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'qwantmailer\\' => array($baseDir . '/src'),
+    'Qwant\\' => array($baseDir . '/src'),
 );
