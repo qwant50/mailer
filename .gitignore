@@ -1,2 +1,3 @@
-# Created by .ignore support plugin (hsz.mobi)
 /src/Mailer/config/mailerConfig.php
+/vendor/
+.idea
