@@ -7,7 +7,7 @@
  */
 
 /**
- * Class config
+ *  mailerConfig
  *  example:
  *  $host = 'smtp.mail.ru';
  *  $port = 587;
@@ -18,14 +18,11 @@
  *
  */
 
-namespace qwantmailer\Config;
-
-class Config
-{
-    public $host = '127.0.0.1';
-    public $port = 587;
-    public $smtp_username = '';
-    public $smtp_password = '';
-    public $mailFrom = '';
-    public $debug = 5;
-}
+return [
+    'host' => '127.0.0.1',
+    'port' => 587,
+    'smtp_username' => '',
+    'smtp_password' => '',
+    'mailFrom' => '',
+    'debug' => 5,
+];

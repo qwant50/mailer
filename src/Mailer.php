@@ -9,23 +9,41 @@
 
 namespace qwantmailer;
 
-use qwantmailer\config\Config;
-
-class Mailer extends Config
+class Mailer
 {
+    public $options = [];
     public $CRLF = "\r\n";
     public $connect;
+    public $mailTo;
     public $headers = [];
     public $body;
-    public $mailTo;
 
 
     public $Timelimit = 2;
     public $Timeout;
 
+
+    public function __construct()
+    {
+        $this->options['mailer'] = $this->loadConfig();
+    }
+
+    public function loadConfig($path = __DIR__ . '/config/mailerConfig.php')
+    {
+        if (is_file($path) && is_readable($path)) {
+            return include $path;
+        }
+    }
+
+    public function saveConfig($path = __DIR__ . 'config/mailerConfig.php')
+    {
+        $content = "<?php" . PHP_EOL . "return " . var_export($this->options['mailer'], true) . ";";
+        return file_put_contents($path, $content);
+    }
+
     private function echoInfo($infoMessage)
     {
-        if ($this->debug > 0) {
+        if ($this->options['mailer']['debug'] > 0) {
             echo $infoMessage;
         }
         return $infoMessage;
@@ -52,7 +70,8 @@ class Mailer extends Config
     public function sendMail()
     {
         $errno = $errstr = '';
-        if ($this->connect = fsockopen($this->host, $this->port, $errno, $errstr, 30)) {
+        var_dump($this->options['mailer']);
+        if ($this->connect = fsockopen($this->options['mailer']['host'], $this->options['mailer']['port'], $errno, $errstr, 30)) {
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
             if (substr($this->echoInfo($this->get_lines() . '<br>'), 0, 3) != '220') {
                 return false;
@@ -71,13 +90,13 @@ class Mailer extends Config
             $this->echoInfo(substr($response, 0, 4) . base64_decode(substr($response, 3)) . '<br>');
 
             // username send in base64
-            $response = $this->sendCommand(base64_encode($this->smtp_username));
+            $response = $this->sendCommand(base64_encode($this->options['mailer']['smtp_username']));
             $this->echoInfo(substr($response, 0, 4) . base64_decode(substr($response, 3)) . '<br>');
 
             // password send in base64
-            $this->sendCommand(base64_encode($this->smtp_password));
+            $this->sendCommand(base64_encode($this->options['mailer']['smtp_password']));
 
-            $this->sendCommand('MAIL FROM: <' . $this->mailFrom . '>');  // Return-Path
+            $this->sendCommand('MAIL FROM: <' . $this->options['mailer']['mailFrom'] . '>');  // Return-Path
 
             $this->sendCommand('RCPT TO: <' . $this->mailTo . '>');
 
@@ -85,7 +104,7 @@ class Mailer extends Config
 
             if ($this->headers) {
                 foreach ($this->headers as $key => $header):
-                    $this->sendCommand($key .': '. $header);
+                    $this->sendCommand($key . ': ' . $header);
                 endforeach;
                 $this->sendCommand('');  // empty line to separate headers from body
             }

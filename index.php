@@ -27,3 +27,6 @@ if ($mailSMTP->sendMail()) {
     // Have an error!
 };
 
+/*$mailSMTP->loadConfig();
+var_dump($mailSMTP->options);
+$mailSMTP->saveConfig('temp.php');*/
