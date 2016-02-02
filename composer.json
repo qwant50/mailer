@@ -9,10 +9,13 @@
     }
   ],
   "minimum-stability": "dev",
-  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "~5.0"
+  },
   "autoload": {
     "psr-4": {
-      "Qwant\\": "src/"
+      "Qwant\\": "src/",
+      "Qwant\\Tests\\": "src/tests/"
     }
   },
   "license": "MIT"
