@@ -12,14 +12,14 @@ namespace Qwant\Mailer;
 class Mailer
 {
     public $options = [];
-    public $CRLF = "\r\n";
+    private $CRLF = "\r\n";
     public $connect;
     public $mailTo;
     public $headers = [];
     public $body;
 
-    public $Timelimit = 2;
-    public $Timeout;
+    public $timeLimit = 2;
+    public $timeOut;
 
 
     public function __construct()
@@ -134,8 +134,8 @@ class Mailer
         $data = '';
         $endtime = 0;
         stream_set_timeout($this->connect, 1);
-        if ($this->Timelimit > 0) {
-            $endtime = time() + $this->Timelimit;
+        if ($this->timeLimit > 0) {
+            $endtime = time() + $this->timeLimit;
         }
         while (is_resource($this->connect) && !feof($this->connect)) {
             $str = @fgets($this->connect, 515);
