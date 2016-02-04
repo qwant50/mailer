@@ -1,6 +1,6 @@
 {
   "name": "qwant50/mailer",
-  "description": "Mailer module.",
+  "description": "Mailer component.",
   "type": "library",
   "authors": [
     {

@@ -26,7 +26,7 @@ to the require section of your composer.json.
 
 ## Usage
 
-####1. You MUST to set transport field in src/Mailer/config/configMailer.php
+####1. You MUST to set transport fields in src/Mailer/config/configMailer.php
 
 ```php
 return [
@@ -35,7 +35,7 @@ return [
     'smtp_username' => 'username',
     'smtp_password' => 'password',
     'mailFrom' => 'transportMailAddress@domain.com',
-    'debug' => 5,  //  0 - disable messages
+    'debug' => 5,  //  0 - disable debug messages
 ];
 ```
 
