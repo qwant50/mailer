@@ -26,7 +26,7 @@ to the require section of your composer.json.
 
 ## Usage
 
-####1. You MUST to set transport field in src/Mailer/config/configMailer.php.
+####1. You MUST to set transport field in src/Mailer/config/configMailer.php
 
 ```php
 return [
@@ -39,7 +39,7 @@ return [
 ];
 ```
 
-####2. Set some message headers "RECOMMENDED":
+####2. Set some message headers. "RECOMMENDED"
 
 ```php
 $mailSMTP = new \Qwant\Mailer\Mailer();
@@ -50,7 +50,7 @@ $mailSMTP->headers['To'] = 'example@domain.com';
 $mailSMTP->headers['Subject'] = 'Text field.';
 ```
 
-####3. Set body and mailTo fields MUST.
+####3. Set body and mailTo fields MUST
 
 ```php
 $mailSMTP->body = 'Message's body.';
