@@ -15,6 +15,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 {
     public function testGoodConfiguration()
     {
+        ob_start();
         $mailSMTP = new Mailer();
         $_SERVER["SERVER_NAME"] = 'testLocalHost';
         // This is optional headers for example only
@@ -28,5 +29,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $mailSMTP->mailTo = 'qwantonline@gmail.com';
 
         $this->assertEquals(true, $mailSMTP->sendMail());
+        ob_end_clean();
     }
 }
