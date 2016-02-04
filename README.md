@@ -53,7 +53,7 @@ $mailSMTP->headers['Subject'] = 'Text field.';
 ###3. Set body and mailTo fields MUST.
 
 ```php
-$mailSMTP->body = 'Message's body.';
+$mailSMTP->body = 'Message\'s body.';
 $mailSMTP->mailTo = 'example@domain.com';
 ```
 
