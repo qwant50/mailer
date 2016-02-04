@@ -16,18 +16,20 @@ $mailSMTP = new \Qwant\Mailer\Mailer();
 // This is optional headers for example only
 $mailSMTP->headers['Error-to'] = 'sergeyhdd@mail.ru';
 $mailSMTP->headers['Subject'] = 'Must to WORK!';
-$mailSMTP->headers['To'] = 'qwantonline@gmail.com';
+$mailSMTP->headers['To'] = 'dasd_90@hotmail.com';
 $mailSMTP->headers['From'] = 'sergeyhdd@mail.ru';
+$mailSMTP->headers['Content-Type'] = 'text/html; charset=UTF-8';
 
 // Body & mailTo MUST!
-$mailSMTP->body = 'Right headers. Please check. HA-ha-ha..1';
-$mailSMTP->mailTo = 'qwantonline@gmail.com';
+$mailSMTP->body = 'Content-Type and charset added.';
+$mailSMTP->mailTo = 'qwantonline@gmail.com';  //dasd_90@hotmail.com
 
 
-if ($mailSMTP->sendMail()) {
-    // Successful
+if ($mailSMTP->sendViaPHP()) {
+    echo 'Successe';
+    // Success
 } else {
-    // Have an error!
+    // Error
 };
 
 

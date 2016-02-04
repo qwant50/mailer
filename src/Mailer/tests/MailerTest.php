@@ -6,7 +6,7 @@
  * Time: 5:14 PM
  */
 
-//namespace Qwant\Mailer;
+namespace Qwant\Test\MailerTest;
 
 use Qwant\Mailer\Mailer;
 
@@ -23,6 +23,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $mailSMTP->headers['Subject'] = 'Must to WORK!';
         $mailSMTP->headers['To'] = 'qwantonline@gmail.com';
         $mailSMTP->headers['From'] = 'sergeyhdd@mail.ru';
+        $mailSMTP->headers['Content-Type'] = 'text/html; charset=UTF-8';
 
         // Body & mailTo MUST!
         $mailSMTP->body = 'Right headers. Right body. This is test message sent via SMTP module.';
