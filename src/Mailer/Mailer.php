@@ -62,7 +62,8 @@ class Mailer
     }
 
     public function sendMail(){
-        return ($this->options['mailer']['transport'] == 'smtp1') ? $this->sendViaSMTP() : $this->sendViaSendMail();
+        return ($this->options['mailer']['transport'] == 'smtp1') ? $this->sendViaSMTP() : $this->options['mailer']['transport'] == 'smtp2'
+        ? $this->sendViaSendMail() : false;
              }
 
     public function sendViaSendMail()
