@@ -31,6 +31,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $mailSMTP->mailTo = 'qwantonline@gmail.com';
 
         $this->assertEquals(true, $mailSMTP->sendMail());
+        unset($mailSMTP);
         ob_end_clean();
     }
 
@@ -52,6 +53,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $mailSMTP->mailTo = 'qwantonline@gmail.com';
 
         $this->assertEquals(true, $mailSMTP->sendMail());
+        unset($mailSMTP);
         ob_end_clean();
     }
 }
