@@ -25,11 +25,20 @@ $mailSMTP->body = 'Content-Type and charset added.';
 $mailSMTP->mailTo = 'qwantonline@gmail.com';  //dasd_90@hotmail.com
 
 
-if ($mailSMTP->sendViaPHP()) {
+if ($mailSMTP->sendViaPHPugly()) {
     echo 'Successe';
     // Success
 } else {
     // Error
 };
 
+try {
 
+} catch (Exception $e) {
+
+    //echo $e->getMessage() . '  ' . $e->getTraceAsString();
+    // try to write log
+    //errorLog($e->getMessage(), $e->getTraceAsString());
+    // display error page
+    //require_once 'error.php';
+}

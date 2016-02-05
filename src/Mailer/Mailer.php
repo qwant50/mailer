@@ -61,43 +61,35 @@ class Mailer
         return $response;
     }
 
+    public function sendMail(){
+        return ($this->options['mailer']['transport'] == 'smtp1') ? $this->sendViaSMTP() : $this->sendViaSendMail();
+             }
 
-    public function sendViaPHP()
+    public function sendViaSendMail()
     {
-        // prepare transport
-        var_dump(getenv('SMTP'));
-        var_dump(putenv('SMTP='.$this->options['mailer']['host']));
-        if (!getenv('SMTP') && !putenv('SMTP='.$this->options['mailer']['host'])) echo 'SMTP';
-        if (!getenv('smtp_port') && !putenv('smtp_port='.$this->options['mailer']['port'])) return false;
-        if (!getenv('sendmail_from') && !putenv('sendmail_from='.$this->options['mailer']['mailFrom'])) return false;
-
-
-        $subject ='';
+        $subject = '';
         $preparedHeaders = '';
         if ($this->headers) {
             foreach ($this->headers as $key => $header):
                 if (strtolower(trim($key)) == 'subject') {
                     $subject = $header;
-                }
-                else {
-                    $preparedHeaders .= $key . ': ' . $header. $this->CRLF;
+                } else {
+                    $preparedHeaders .= $key . ': ' . $header . $this->CRLF;
                 }
             endforeach;
         }
-        var_dump($subject);
-        var_dump($preparedHeaders);
-        return mail($this->mailTo, $subject, $this->body);
+        return mail($this->mailTo, $subject, $this->body, $preparedHeaders);
     }
 
     /**
      * @param $mailTo string - receiver of email message
      * @return bool
      */
-    public function sendMail()
+    public function sendViaSMTP()
     {
-        /*       if ($this->options['mailer']['host'] == ''){
-                   //throw new \Exception('Error mail send: Host isn\'t defined');
-               }*/
+        if (!$this->options['mailer']['host']) {
+            throw new MailException("Error mail send: Host isn\'t defined");
+        }
         $errno = $errstr = '';
         if ($this->connect = fsockopen($this->options['mailer']['host'], $this->options['mailer']['port'], $errno,
             $errstr, 30)
