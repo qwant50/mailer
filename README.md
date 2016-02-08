@@ -26,7 +26,7 @@ to the require section of your composer.json.
 
 ## Usage
 
-####1. You MUST to set transport fields in `$this->options['mailer']` from `path/to/config/mailer.php`
+####1. You MUST to init transport fields `$this->options` from config file `path/to/config/mailer.php`
 
 ```php
 return [
@@ -43,7 +43,7 @@ return [
 ####2. Set some message headers. "RECOMMENDED"
 
 ```php
-$mailSMTP = new \Qwant\Mailer\Mailer();
+$mailSMTP = new Mailer();
 
 $mailSMTP->addHeader('Error-to', 'example@domain.com')
          ->addHeader('From', 'example@domain.com')

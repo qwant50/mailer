@@ -1,6 +1,6 @@
 {
   "name": "qwant50/mailer",
-  "description": "Mailer component.",
+  "description": "ITCourses framework mailer component",
   "type": "library",
   "authors": [
     {
