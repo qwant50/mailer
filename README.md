@@ -26,10 +26,11 @@ to the require section of your composer.json.
 
 ## Usage
 
-####1. You MUST to set transport fields in src/Mailer/config/configMailer.php
+####1. You MUST to set transport fields in `$this->options['mailer']` from `path/to/config/mailer.php`
 
 ```php
 return [
+    'transport' => 'smtp',
     'host' => 'smtp.domain.com',
     'port' => 587,
     'smtp_username' => 'username',
@@ -44,10 +45,10 @@ return [
 ```php
 $mailSMTP = new \Qwant\Mailer\Mailer();
 
-$mailSMTP->headers['Error-to'] = 'example@domain.com';
-$mailSMTP->headers['From'] = 'example@domain.com';
-$mailSMTP->headers['To'] = 'example@domain.com';
-$mailSMTP->headers['Subject'] = 'Text field.';
+$mailSMTP->addHeader('Error-to', 'example@domain.com')
+         ->addHeader('From', 'example@domain.com')
+         ->addHeader('To', 'example@domain.com')
+         ->addHeader('Subject', 'Text field.');
 ```
 
 ####3. Set body and mailTo fields MUST
