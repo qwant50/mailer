@@ -7,7 +7,7 @@
  * Time: 21:58
  */
 
-namespace Qwant\Mailer;
+namespace Qwant;
 
 class Mailer
 {
@@ -29,7 +29,7 @@ class Mailer
 
     private function echoInfo($infoMessage)
     {
-        if ($this->options['mailer']['debug'] > 0) {
+        if ($this->options['debug'] > 0) {
             echo $infoMessage;
         }
         return $infoMessage;
@@ -50,8 +50,8 @@ class Mailer
 
     public function sendMail()
     {
-        return ($this->options['mailer']['transport'] == 'smtp')
-            ? $this->sendViaSMTP() : (($this->options['mailer']['transport'] == 'mail')
+        return ($this->options['transport'] == 'smtp')
+            ? $this->sendViaSMTP() : (($this->options['transport'] == 'mail')
                 ? $this->sendViaSendMail() : false);
     }
 
@@ -77,11 +77,11 @@ class Mailer
      */
     public function sendViaSMTP()
     {
-        if (!$this->options['mailer']['host']) {
+        if (!$this->options['host']) {
             throw new MailException("Error mail send: Host isn\'t defined");
         }
         $errno = $errstr = '';
-        if ($this->connect = fsockopen($this->options['mailer']['host'], $this->options['mailer']['port'], $errno,
+        if ($this->connect = fsockopen($this->options['host'], $this->options['port'], $errno,
             $errstr, 30)
         ) {
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
@@ -102,13 +102,13 @@ class Mailer
             $this->echoInfo(substr($response, 0, 4) . base64_decode(substr($response, 3)) . '<br>');
 
             // username send in base64
-            $response = $this->sendCommand(base64_encode($this->options['mailer']['smtp_username']));
+            $response = $this->sendCommand(base64_encode($this->options['smtp_username']));
             $this->echoInfo(substr($response, 0, 4) . base64_decode(substr($response, 3)) . '<br>');
 
             // password send in base64
-            $this->sendCommand(base64_encode($this->options['mailer']['smtp_password']));
+            $this->sendCommand(base64_encode($this->options['smtp_password']));
 
-            $this->sendCommand('MAIL FROM: <' . $this->options['mailer']['mailFrom'] . '>');  // Return-Path
+            $this->sendCommand('MAIL FROM: <' . $this->options['mailFrom'] . '>');  // Return-Path
 
             $this->sendCommand('RCPT TO: <' . $this->mailTo . '>');
 

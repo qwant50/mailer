@@ -6,8 +6,8 @@
  * Time: 21:57
  */
 
-use Qwant\Config\Config;
-use Qwant\Mailer\Mailer;
+use Qwant\Config;
+use Qwant\Mailer;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -16,7 +16,7 @@ $loader = require __DIR__ . '/vendor/autoload.php';
 
 $confObj = new Config(__DIR__ . '/src/Mailer/configs/');
 $mailSMTP = new Mailer();
-$mailSMTP->options['mailer'] = $confObj->loadConfig('mailer.php');
+$mailSMTP->options = $confObj->getData('mailer');
 
 // This is optional headers for example only
 $mailSMTP->addHeader('Error-to', 'sergeyhdd@mail.ru')

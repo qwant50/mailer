@@ -8,18 +8,19 @@
 
 namespace Qwant\Test\MailerTest;
 
-use Qwant\Mailer\Mailer;
+use Qwant\Mailer;
+use Qwant\Config;
 
 
 class MailerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGoodConfigurationSMTPTransport1()
+    public function testGoodConfigurationSmtpTransport()
     {
         ob_start();
         $confObj = new Config(__DIR__ . '/src/Mailer/configs/');
         $mailSMTP = new Mailer();
-        $mailSMTP->options['mailer'] = $confObj->loadConfig('mailer.php');
-        $mailSMTP->options['mailer']['transport'] = 'smtp';
+        $mailSMTP->options = $confObj->getData('mailer');
+        $mailSMTP->options['transport'] = 'smtp';
 
         $_SERVER["SERVER_NAME"] = 'testLocalHost';
         // This is optional headers for example only
@@ -38,13 +39,13 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         ob_end_clean();
     }
 
-    public function testGoodConfigurationSMTPTransport2()
+    public function testGoodConfigurationMailTransport()
     {
         ob_start();
         $confObj = new Config(__DIR__ . '/src/Mailer/configs/');
         $mailSMTP = new Mailer();
-        $mailSMTP->options['mailer'] = $confObj->loadConfig('mailer.php');
-        $mailSMTP->options['mailer']['transport'] = 'mail';
+        $mailSMTP->options = $confObj->getData('mailer');
+        $mailSMTP->options['transport'] = 'mail';
         $_SERVER["SERVER_NAME"] = 'testLocalHost';
         // This is optional headers for example only
         $mailSMTP->addHeader('Error-to', 'sergeyhdd@mail.ru')
