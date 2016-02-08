@@ -42,10 +42,12 @@ class Mailer
         return $response;
     }
 
-    public function sendMail(){
-        return ($this->options['mailer']['transport'] == 'smtp1') ? $this->sendViaSMTP() : $this->options['mailer']['transport'] == 'smtp2'
-        ? $this->sendViaSendMail() : false;
-             }
+    public function sendMail()
+    {
+        return ($this->options['mailer']['transport'] == 'smtp1')
+            ? $this->sendViaSMTP() : (($this->options['mailer']['transport'] == 'smtp2')
+                ? $this->sendViaSendMail() : false);
+    }
 
     public function sendViaSendMail()
     {
