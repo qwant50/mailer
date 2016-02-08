@@ -21,25 +21,6 @@ class Mailer
     public $timeLimit = 2;
     public $timeOut;
 
-
-    public function __construct()
-    {
-        $this->options['mailer'] = $this->loadConfig();
-    }
-
-    public function loadConfig($path = __DIR__ . '/config/mailerConfig.php')
-    {
-        if (is_file($path) && is_readable($path)) {
-            return include $path;
-        }
-    }
-
-    public function saveConfig($path = __DIR__ . 'config/mailerConfig.php')
-    {
-        $content = "<?php" . PHP_EOL . "return " . var_export($this->options['mailer'], true) . ";";
-        return file_put_contents($path, $content);
-    }
-
     private function echoInfo($infoMessage)
     {
         if ($this->options['mailer']['debug'] > 0) {
