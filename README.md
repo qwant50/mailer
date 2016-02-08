@@ -12,13 +12,13 @@ The preferred way to install this ITCourses framework mailer component is throug
 Either run
 
 ```sh
-php composer.phar require "qwant/mailer"
+php composer.phar require "qwant50/mailer"
 ```
 
 or add
 
 ```json
-"qwant/mailer": "~2.0.*"
+"qwant50/mailer": "~2.0.*"
 ```
 
 to the require section of your composer.json.

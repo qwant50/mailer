@@ -83,8 +83,8 @@ class Mailer
     }
 
     /**
-     * @param $mailTo string - receiver of email message
      * @return bool
+     * @throws MailException
      */
     public function sendViaSMTP()
     {
