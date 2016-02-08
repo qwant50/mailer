@@ -21,6 +21,12 @@ class Mailer
     public $timeLimit = 2;
     public $timeOut;
 
+    public function addHeader($name, $value = null)
+    {
+        $this->headers[$name] = $value;
+        return $this;
+    }
+
     private function echoInfo($infoMessage)
     {
         if ($this->options['mailer']['debug'] > 0) {
@@ -44,8 +50,8 @@ class Mailer
 
     public function sendMail()
     {
-        return ($this->options['mailer']['transport'] == 'smtp1')
-            ? $this->sendViaSMTP() : (($this->options['mailer']['transport'] == 'smtp2')
+        return ($this->options['mailer']['transport'] == 'smtp')
+            ? $this->sendViaSMTP() : (($this->options['mailer']['transport'] == 'mail')
                 ? $this->sendViaSendMail() : false);
     }
 

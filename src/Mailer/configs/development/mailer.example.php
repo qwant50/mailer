@@ -9,6 +9,7 @@
 /**
  *  mailerConfig
  *  example:
+ *  $transport = 'smtp';  transport = 'smtp' or 'mail';
  *  $host = 'smtp.mail.ru';
  *  $port = 587;
  *  $smtp_username = '********@mail.ru';
@@ -19,7 +20,7 @@
  */
 
 return [
-    'transport' => 'smtp1',
+    'transport' => 'smtp',
     'host' => '127.0.0.1',
     'port' => 587,
     'smtp_username' => '',

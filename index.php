@@ -19,17 +19,15 @@ $mailSMTP = new Mailer();
 $mailSMTP->options['mailer'] = $confObj->loadConfig('mailer.php');
 
 // This is optional headers for example only
-$mailSMTP->headers['Error-to'] = 'sergeyhdd@mail.ru';
-$mailSMTP->headers['Subject'] = 'Must to WORK!';
-$mailSMTP->headers['To'] = 'dasd_90@hotmail.com';
-$mailSMTP->headers['From'] = 'sergeyhdd@mail.ru';
-$mailSMTP->headers['Content-Type'] = 'text/html; charset=UTF-8';
+$mailSMTP->addHeader('Error-to', 'sergeyhdd@mail.ru')
+    ->addHeader('Subject', 'Must to WORK!')
+    ->addHeader('To', 'dasd_90@hotmail.com')
+    ->addHeader('From', 'sergeyhdd@mail.ru')
+    ->addHeader('Content-Type', 'text/html; charset=UTF-8');
 
 // Body & mailTo MUST!
 $mailSMTP->body = 'Content-Type and charset added.';
 $mailSMTP->mailTo = 'qwantonline@gmail.com';  //dasd_90@hotmail.com
-
-var_dump($mailSMTP->options);
 
 if ($mailSMTP->sendMail()) {
     echo 'Successe';
