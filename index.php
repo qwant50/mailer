@@ -14,7 +14,7 @@ ini_set('display_errors', 1);
 
 $loader = require __DIR__ . '/vendor/autoload.php';
 
-$confObj = new Config(__DIR__ . '/src/Mailer/configs/');
+$confObj = new Config(__DIR__ . '/src/configs/');
 $mailSMTP = new Mailer();
 $mailSMTP->options = $confObj->getData('mailer');
 

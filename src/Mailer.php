@@ -9,10 +9,11 @@
 
 namespace Qwant;
 
+
 class Mailer
 {
+    const EOL = "\r\n";
     public $options = [];
-    private $CRLF = "\r\n";
     public $connect;
     public $mailTo;
     public $headers = [];
@@ -20,6 +21,7 @@ class Mailer
 
     public $timeLimit = 2;
     public $timeOut;
+    private $lastLines;
 
     public function addHeader($name, $value = null)
     {
@@ -32,20 +34,19 @@ class Mailer
         if ($this->options['debug'] > 0) {
             echo $infoMessage;
         }
-        return $infoMessage;
     }
 
     private function sendCommand($command)
     {
         $this->echoInfo('<span style="color : green">' . htmlspecialchars($command) . '</span><br>');
         if ($this->connect) {
-            fputs($this->connect, $command . $this->CRLF);
-            $response = $this->get_lines();
-            $this->echoInfo($response . '<br>');
+            fputs($this->connect, $command . self::EOL);
+            $this->getLines();
+            $this->echoInfo($this->lastLines . '<br>');
         } else {
             $this->echoInfo('<span style="color : red">connection lost!</span>');
         }
-        return $response;
+        return $this->lastLines;
     }
 
     public function sendMail()
@@ -59,15 +60,13 @@ class Mailer
     {
         $subject = '';
         $preparedHeaders = '';
-        if ($this->headers) {
-            foreach ($this->headers as $key => $header):
-                if (strtolower(trim($key)) == 'subject') {
-                    $subject = $header;
-                } else {
-                    $preparedHeaders .= $key . ': ' . $header . $this->CRLF;
-                }
-            endforeach;
-        }
+        foreach ($this->headers as $key => $header):
+            if (strtolower(trim($key)) == 'subject') {
+                $subject = $header;
+            } else {
+                $preparedHeaders .= $key . ': ' . $header . self::EOL;
+            }
+        endforeach;
         return mail($this->mailTo, $subject, $this->body, $preparedHeaders);
     }
 
@@ -80,12 +79,17 @@ class Mailer
         if (!$this->options['host']) {
             throw new MailException("Error mail send: Host isn\'t defined");
         }
+        if (!$this->options['port']) {
+            throw new MailException("Error mail send: Port isn\'t defined");
+        }
         $errno = $errstr = '';
-        if ($this->connect = fsockopen($this->options['host'], $this->options['port'], $errno,
-            $errstr, 30)
-        ) {
+        if (!$this->connect = fsockopen($this->options['host'], $this->options['port'], $errno, $errstr, 30)) {
+            return false;
+        } else {
             // expectedResult = 220 smtp43.i.mail.ru ESMTP ready
-            if (substr($this->echoInfo($this->get_lines() . '<br>'), 0, 3) != '220') {
+            $this->getLines();
+            $this->echoInfo($this->lastLines . '<br>');
+            if (substr($this->lastLines, 0, 3) != '220') {
                 return false;
             }
 
@@ -98,12 +102,12 @@ class Mailer
             // HELO/EHLO  command for greeting with server  HELO = SMTP, EHLO = ESMTP.  EHLO is better.
             $this->sendCommand('EHLO ' . $_SERVER["SERVER_NAME"]);
 
-            $response = $this->sendCommand('AUTH LOGIN');
-            $this->echoInfo(substr($response, 0, 4) . base64_decode(substr($response, 3)) . '<br>');
+            $this->sendCommand('AUTH LOGIN');
+            $this->echoInfo(substr($this->lastLines, 0, 4) . base64_decode(substr($this->lastLines, 3)) . '<br>');
 
             // username send in base64
-            $response = $this->sendCommand(base64_encode($this->options['smtp_username']));
-            $this->echoInfo(substr($response, 0, 4) . base64_decode(substr($response, 3)) . '<br>');
+            $this->sendCommand(base64_encode($this->options['smtp_username']));
+            $this->echoInfo(substr($this->lastLines, 0, 4) . base64_decode(substr($this->lastLines, 3)) . '<br>');
 
             // password send in base64
             $this->sendCommand(base64_encode($this->options['smtp_password']));
@@ -114,12 +118,10 @@ class Mailer
 
             $this->sendCommand('DATA');
 
-            if ($this->headers) {
-                foreach ($this->headers as $key => $header):
-                    $this->sendCommand($key . ': ' . $header);
-                endforeach;
-                $this->sendCommand('');  // empty line to separate headers from body
-            }
+            foreach ($this->headers as $key => $header):
+                $this->sendCommand($key . ': ' . $header);
+            endforeach;
+            $this->sendCommand('');  // empty line to separate headers from body
 
             $this->sendCommand($this->body);
 
@@ -132,11 +134,10 @@ class Mailer
             fclose($this->connect);
 
             return true;
-        };
-        return false;
+        }
     }
 
-    private function get_lines()
+    private function getLines()
     {
         // If the connection is bad, give up straight away
         if (!is_resource($this->connect)) {
@@ -165,6 +166,6 @@ class Mailer
                 break;
             }
         }
-        return $data;
+        $this->lastLines = $data;
     }
 }

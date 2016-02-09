@@ -6,7 +6,7 @@
  * Time: 5:35 PM
  */
 
-namespace Qwant\Mailer;
+namespace Qwant;
 
 
 class MailException extends \Exception
