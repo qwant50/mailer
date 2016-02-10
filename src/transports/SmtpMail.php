@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Qwant
- * Date: 10-Feb-16
- * Time: 18:47
- */
 
 namespace Qwant\transports;
 
@@ -52,6 +46,8 @@ class SmtpMail implements IMailer
     }
 
     /**
+     * Send message via smtp protocol
+     *
      * @param Message $message
      * @param array $config
      * @return bool

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Qwant
- * Date: 10-Feb-16
- * Time: 18:47
- */
 
 namespace Qwant\transports;
 

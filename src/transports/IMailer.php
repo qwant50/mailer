@@ -4,7 +4,7 @@ namespace Qwant\transports;
 
 use Qwant\Message;
 /**
- * Mailer interface.
+ * Mailer transport interface.
  */
 interface IMailer
 {

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Qwant
- * Date: 10-Feb-16
- * Time: 19:00
- */
 
 namespace Qwant;
 

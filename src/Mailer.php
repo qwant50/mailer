@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Qwant
- * Date: 25-Jan-16
- * Time: 21:58
- */
 
 namespace Qwant;
 
@@ -25,6 +19,11 @@ class Mailer
         $this->config = $config;
     }
 
+    /**
+     * @param Message $message
+     * @return bool
+     * @throws MailerException
+     */
     public function send(Message $message)
     {
         if ('smtp' == $this->config['transport']) {
