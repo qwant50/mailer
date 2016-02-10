@@ -10,7 +10,8 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "qwant50/config": "dev-master"
+    "qwant50/config": "dev-master",
+    "rioter/logger": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.0"

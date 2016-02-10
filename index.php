@@ -8,6 +8,7 @@
 
 use Qwant\Config;
 use Qwant\Mailer;
+use Qwant\Message;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -15,22 +16,20 @@ ini_set('display_errors', 1);
 $loader = require __DIR__ . '/vendor/autoload.php';
 
 $confObj = new Config(__DIR__ . '/src/configs/');
-$mailSMTP = new Mailer();
-$mailSMTP->options = $confObj->getData('mailer');
 
+$message = new Message();
 // This is optional headers for example only
-$mailSMTP->addHeader('Error-to', 'sergeyhdd@mail.ru')
+$message->addHeader('Error-to', 'sergeyhdd@mail.ru')
     ->addHeader('Subject', 'Must to WORK!')
     ->addHeader('To', 'dasd_90@hotmail.com')
     ->addHeader('From', 'sergeyhdd@mail.ru')
-    ->addHeader('Content-Type', 'text/html; charset=UTF-8');
+    ->addHeader('Content-Type', 'text/html; charset=UTF-8')
+    ->setBody('Content-Type and charset added.')
+    ->setMailTo('qwantonline@gmail.com');  // mailTo MUST!             :  dasd_90@hotmail.com
 
-// Body & mailTo MUST!
-$mailSMTP->body = 'Content-Type and charset added.';
-$mailSMTP->mailTo = 'qwantonline@gmail.com';  //dasd_90@hotmail.com
+$mailer = new Mailer($confObj->getData('mailer'));
 
-if ($mailSMTP->sendMail()) {
-    echo 'Successe';
+if ($mailer->send($message)) {
     // Success
 } else {
     // Error

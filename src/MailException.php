@@ -9,7 +9,7 @@
 namespace Qwant;
 
 
-class MailException extends \Exception
+class MailerException extends \Exception
 {
 
 }
