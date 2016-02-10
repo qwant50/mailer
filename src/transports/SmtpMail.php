@@ -11,6 +11,7 @@ namespace Qwant\transports;
 use Qwant\Message;
 use Qwant\MailerException;
 
+
 class SmtpMail implements IMailer
 {
     private $config;
@@ -18,12 +19,22 @@ class SmtpMail implements IMailer
     private $lastLines;
     private $connect;
     private $timeLimit = 2;
-    private $timeOut;
+    private $fileAdapter;
+    private $logger;
+
+    public function __construct(){
+        $this->fileAdapter = new \Rioter\Logger\Adapters\FileAdapter(__DIR__ . '/logs.log');
+        $this->fileAdapter->setMinLevel(\Psr\Log\LogLevel::INFO);
+
+        $this->logger = new \Rioter\Logger\Logger();
+        $this->logger->setLogger($this->fileAdapter);
+        $this->logger->debug('info');
+    }
 
     private function echoInfo($infoMessage)
     {
         if ($this->config['debug'] > 0) {
-            echo $infoMessage;
+            $this->logger->info(strip_tags($infoMessage), array());
         }
     }
 

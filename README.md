@@ -26,7 +26,7 @@ to the require section of your composer.json.
 
 ## Usage
 
-####1. You MUST to init transport fields `$this->options` from config file `path/to/config/mailer.php`
+####1. You MUST to init `$config` array from the config file `path/to/config/mailer.php`
 
 ```php
 return [
@@ -43,25 +43,27 @@ return [
 ####2. Set some message headers. "RECOMMENDED"
 
 ```php
-$mailSMTP = new Mailer();
+$message = new Message();
 
-$mailSMTP->addHeader('Error-to', 'example@domain.com')
-         ->addHeader('From', 'example@domain.com')
-         ->addHeader('To', 'example@domain.com')
-         ->addHeader('Subject', 'Text field.');
+$message->addHeader('Error-to', 'example@domain.com')
+        ->addHeader('From', 'example@domain.com')
+        ->addHeader('To', 'example@domain.com')
+        ->addHeader('Subject', 'Text field.');
 ```
 
 ####3. Set body and mailTo fields MUST
 
 ```php
-$mailSMTP->body = 'Message's body.';
-$mailSMTP->mailTo = 'example@domain.com';
+$message->setBody('Message's body.');
+$message->setMailTo('example@domain.com');
 ```
 
 ####4. Send a message
 
 ```php
-if ($mailSMTP->sendMail()) {
+$mailer = new Mailer($config);
+
+if ($mailer->send($message)) {
     // Success
 } else {
     // Error
