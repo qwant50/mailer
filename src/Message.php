@@ -21,6 +21,7 @@ class Message
         $this->body = $value;
         return $this;
     }
+
     public function setMailTo($value)
     {
         $this->mailTo = $value;

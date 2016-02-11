@@ -16,7 +16,14 @@ class SmtpMail implements IMailer
     private $fileAdapter;
     private $logger;
 
-    public function __construct(){
+    /**
+     *
+     * Init logger
+     *
+     * SmtpMail constructor.
+     */
+    public function __construct()
+    {
         $this->fileAdapter = new \Rioter\Logger\Adapters\FileAdapter(__DIR__ . '/logs.log');
         $this->fileAdapter->setMinLevel(\Psr\Log\LogLevel::INFO);
 
@@ -25,6 +32,12 @@ class SmtpMail implements IMailer
         $this->logger->debug('info');
     }
 
+    /**
+     *
+     * Loggin info
+     *
+     * @param string $infoMessage
+     */
     private function echoInfo($infoMessage)
     {
         if ($this->config['debug'] > 0) {
@@ -32,6 +45,13 @@ class SmtpMail implements IMailer
         }
     }
 
+    /**
+     *
+     * Send a command to the remote server
+     *
+     * @param string $command
+     * @return string mixed  Answer from a remote server
+     */
     private function sendCommand($command)
     {
         $this->echoInfo('<span style="color : green">' . htmlspecialchars($command) . '</span><br>');
@@ -117,6 +137,12 @@ class SmtpMail implements IMailer
         }
     }
 
+    /**
+     *
+     * Gets answer from remote server
+     *
+     * @return string
+     */
     private function getLines()
     {
         // If the connection is bad, give up straight away
@@ -141,7 +167,7 @@ class SmtpMail implements IMailer
             if ($info['timed_out']) {
                 break;
             }
-            // Now check if reads took too long  EXTRA!!
+            // Now check if reads took too long EXTRA!!
             if ($endtime and time() > $endtime) {
                 break;
             }

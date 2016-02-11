@@ -11,15 +11,15 @@ class Mailer
 
     private $config;
 
-    public function __construct(array $config = null)
+    public function __construct(array $config = [])
     {
-        if (is_null($config)){
-            throw new MailerException("Config is empty.");
-        }
         $this->config = $config;
     }
 
     /**
+     *
+     * Adapter for selecting a transport
+     *
      * @param Message $message
      * @return bool
      * @throws MailerException

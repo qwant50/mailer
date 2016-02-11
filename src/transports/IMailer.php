@@ -8,5 +8,5 @@ use Qwant\Message;
  */
 interface IMailer
 {
-      function send(Message $message, array $config);
+      public function send(Message $message, array $config);
 }

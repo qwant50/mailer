@@ -9,6 +9,11 @@ class PhpMail implements IMailer
 {
     const EOL = "\r\n";
 
+    /**
+     * @param Message $message
+     * @param array $config
+     * @return bool
+     */
     public function send(Message $message, array $config = [])
     {
         $subject = '';

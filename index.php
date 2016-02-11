@@ -33,4 +33,4 @@ if ($mailer->send($message)) {
     // Success
 } else {
     // Error
-};
+}
