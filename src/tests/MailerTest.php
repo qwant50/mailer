@@ -1,15 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: phpstudent
- * Date: 2/2/16
- * Time: 5:14 PM
- */
 
 namespace Qwant\Test\MailerTest;
 
 use Qwant\Mailer;
 use Qwant\Config;
+use Qwant\Message;
 
 
 class MailerTest extends \PHPUnit_Framework_TestCase
@@ -17,49 +12,46 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testGoodConfigurationSmtpTransport()
     {
         ob_start();
-        $confObj = new Config(__DIR__ . '/src/Mailer/configs/');
-        $mailSMTP = new Mailer();
-        $mailSMTP->options = $confObj->getData('mailer');
-        $mailSMTP->options['transport'] = 'smtp';
+        $confObj = new Config(__DIR__ . '/src/configs/');
 
-        $_SERVER["SERVER_NAME"] = 'testLocalHost';
+        $message = new Message();
         // This is optional headers for example only
-        $mailSMTP->addHeader('Error-to', 'sergeyhdd@mail.ru')
+        $message->addHeader('Error-to', 'sergeyhdd@mail.ru')
             ->addHeader('Subject', 'Must to WORK!')
             ->addHeader('To', 'dasd_90@hotmail.com')
             ->addHeader('From', 'sergeyhdd@mail.ru')
-            ->addHeader('Content-Type', 'text/html; charset=UTF-8');
+            ->addHeader('Content-Type', 'text/html; charset=UTF-8')
+            ->setBody('Content-Type and charset added.')
+            ->setMailTo('qwantonline@gmail.com');  // mailTo MUST!
 
-        // Body & mailTo MUST!
-        $mailSMTP->body = 'Right headers. Right body. This is test message sent via SMTP module.';
-        $mailSMTP->mailTo = 'qwantonline@gmail.com';
+        $confObj->data['transport'] = 'smtp';
+        $mailer = new Mailer($confObj->getData('mailer'));
 
-        $this->assertEquals(true, $mailSMTP->sendMail());
-        unset($mailSMTP);
+        $this->assertEquals(true, $mailer->send($message));
+        unset($mailer);
         ob_end_clean();
     }
 
     public function testGoodConfigurationMailTransport()
     {
         ob_start();
-        $confObj = new Config(__DIR__ . '/src/Mailer/configs/');
-        $mailSMTP = new Mailer();
-        $mailSMTP->options = $confObj->getData('mailer');
-        $mailSMTP->options['transport'] = 'mail';
-        $_SERVER["SERVER_NAME"] = 'testLocalHost';
+        $confObj = new Config(__DIR__ . '/src/configs/');
+
+        $message = new Message();
         // This is optional headers for example only
-        $mailSMTP->addHeader('Error-to', 'sergeyhdd@mail.ru')
+        $message->addHeader('Error-to', 'sergeyhdd@mail.ru')
             ->addHeader('Subject', 'Must to WORK!')
             ->addHeader('To', 'dasd_90@hotmail.com')
             ->addHeader('From', 'sergeyhdd@mail.ru')
-            ->addHeader('Content-Type', 'text/html; charset=UTF-8');
+            ->addHeader('Content-Type', 'text/html; charset=UTF-8')
+            ->setBody('Content-Type and charset added.')
+            ->setMailTo('qwantonline@gmail.com');  // mailTo MUST!
 
-        // Body & mailTo MUST!
-        $mailSMTP->body = 'Right headers. Right body. This is test message sent via SMTP module.';
-        $mailSMTP->mailTo = 'qwantonline@gmail.com';
+        $confObj->data['transport'] = 'mail';
+        $mailer = new Mailer($confObj->getData('mailer'));
 
-        $this->assertEquals(true, $mailSMTP->sendMail());
-        unset($mailSMTP);
+        $this->assertEquals(true, $mailer->send($message));
+        unset($mailer);
         ob_end_clean();
     }
 }

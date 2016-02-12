@@ -24,12 +24,10 @@ class SmtpMail implements IMailer
      */
     public function __construct()
     {
-        $this->fileAdapter = new \Rioter\Logger\Adapters\FileAdapter(__DIR__ . '/logs.log');
-        $this->fileAdapter->setMinLevel(\Psr\Log\LogLevel::INFO);
+        $this->fileAdapter = new \Rioter\Logger\Adapters\FileAdapter(__DIR__ . '/log.txt', 'info');
+        $this->fileAdapter->setAdapterName('fileAdapter');
 
-        $this->logger = new \Rioter\Logger\Logger();
-        $this->logger->setLogger($this->fileAdapter);
-        $this->logger->debug('info');
+        $this->logger = new \Rioter\Logger\Logger($this->fileAdapter);
     }
 
     /**
