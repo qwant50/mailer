@@ -16,7 +16,8 @@ abstract class AbstractTransport
 
     public function __construct()
     {
-        $this->fileAdapter = new \Rioter\Logger\Adapters\FileAdapter(__DIR__ . '/log.txt', 'info');
+        $this->fileAdapter = new \Rioter\Logger\Adapters\FileAdapter('log.txt');
+        var_dump($this->fileAdapter);
         $this->fileAdapter->setAdapterName('fileAdapter');
 
         $this->logger = new \Rioter\Logger\Logger($this->fileAdapter);
