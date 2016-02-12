@@ -5,7 +5,7 @@ namespace Qwant\transports;
 use Qwant\Message;
 
 
-class PhpMail implements IMailer
+class PhpMail extends AbstractTransport
 {
     const EOL = "\r\n";
 

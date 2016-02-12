@@ -17,6 +17,7 @@ $loader = require __DIR__ . '/vendor/autoload.php';
 
 $confObj = new Config(__DIR__ . '/src/configs/');
 
+
 $message = new Message();
 // This is optional headers for example only
 $message->addHeader('Error-to', 'sergeyhdd@mail.ru')

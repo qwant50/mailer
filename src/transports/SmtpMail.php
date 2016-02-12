@@ -6,29 +6,13 @@ use Qwant\Message;
 use Qwant\MailerException;
 
 
-class SmtpMail implements IMailer
+class SmtpMail extends AbstractTransport
 {
     private $config;
     const EOL = "\r\n";
     private $lastLines;
     private $connect;
     private $timeLimit = 2;
-    private $fileAdapter;
-    private $logger;
-
-    /**
-     *
-     * Init logger
-     *
-     * SmtpMail constructor.
-     */
-    public function __construct()
-    {
-        $this->fileAdapter = new \Rioter\Logger\Adapters\FileAdapter(__DIR__ . '/log.txt', 'info');
-        $this->fileAdapter->setAdapterName('fileAdapter');
-
-        $this->logger = new \Rioter\Logger\Logger($this->fileAdapter);
-    }
 
     /**
      *
@@ -39,7 +23,7 @@ class SmtpMail implements IMailer
     private function echoInfo($infoMessage)
     {
         if ($this->config['debug'] > 0) {
-            $this->logger->info(strip_tags($infoMessage), array());
+            $this->log(strip_tags($infoMessage));
         }
     }
 

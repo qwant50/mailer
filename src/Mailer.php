@@ -11,8 +11,10 @@ class Mailer
 
     private $config;
 
+
     /**
      * Mailer constructor. Set config data
+     *
      * @param array $config
      */
     public function __construct(array $config = [])
@@ -21,7 +23,6 @@ class Mailer
     }
 
     /**
-     *
      * Adapter for selecting a transport
      *
      * @param Message $message
