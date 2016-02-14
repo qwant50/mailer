@@ -21,11 +21,12 @@ $message = new Message();
 // This is optional headers for example only
 $message->addHeader('Error-to', 'sergeyhdd@mail.ru')
     ->addHeader('Subject', 'Must to WORK!')
-    ->addHeader('From', 'sergeyhdd@mail.ru')
+    ->addHeader('From', 'sergeyhdd@mail.ru')  // strongly recommend
     ->addHeader('Content-Type', 'text/html; charset=UTF-8')
     ->setBody('Content-Type and charset added.')
-    ->setMailTo('qwantonline@gmail.com');  // mailTo MUST!             :  dasd_90@hotmail.com
+    ->setMailTo('qwantonline@gmail.com');  // mailTo MUST!
 
+// Use information about the transport from a config file
 $mailer = new Mailer($conf->getData('mailer'));
 
 if ($mailer->send($message)) {
