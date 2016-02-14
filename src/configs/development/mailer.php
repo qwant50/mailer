@@ -15,10 +15,10 @@
 
 return [
     'transport' => 'smtp',
-    'host' => 'smtp.mail.ru',
+    'host' => '127.0.0.1',
     'port' => 587,
-    'smtp_username' => 'sergeyhdd@mail.ru',
-    'smtp_password' => 'kansai50mai',
-    'mailFrom' => 'sergeyhdd@mail.ru',
+    'smtp_username' => '',
+    'smtp_password' => '',
+    'mailFrom' => '',
     'debug' => 5,
 ];
