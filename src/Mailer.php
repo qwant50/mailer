@@ -33,11 +33,9 @@ class Mailer
     {
         if ('smtp' == $this->config['transport']) {
             $transport = new SmtpMail();
-        }
-        elseif ('mail' == $this->config['transport']){
+        } elseif ('mail' == $this->config['transport']) {
             $transport = new PhpMail();
-        }
-        else {
+        } else {
             throw new MailerException("Transport '. $this->config['transport'] . ' unknown.");
         }
         return $transport->send($message, $this->config);

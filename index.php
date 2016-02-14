@@ -15,20 +15,18 @@ ini_set('display_errors', 1);
 
 $loader = require __DIR__ . '/vendor/autoload.php';
 
-$confObj = new Config(__DIR__ . '/src/configs/');
-
+$conf = new Config(__DIR__ . '/src/configs/');
 
 $message = new Message();
 // This is optional headers for example only
 $message->addHeader('Error-to', 'sergeyhdd@mail.ru')
     ->addHeader('Subject', 'Must to WORK!')
-    ->addHeader('To', 'dasd_90@hotmail.com')
     ->addHeader('From', 'sergeyhdd@mail.ru')
     ->addHeader('Content-Type', 'text/html; charset=UTF-8')
     ->setBody('Content-Type and charset added.')
     ->setMailTo('qwantonline@gmail.com');  // mailTo MUST!             :  dasd_90@hotmail.com
 
-$mailer = new Mailer($confObj->getData('mailer'));
+$mailer = new Mailer($conf->getData('mailer'));
 
 if ($mailer->send($message)) {
     // Success

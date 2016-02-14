@@ -3,6 +3,8 @@
 namespace Qwant\transports;
 
 use Qwant\Message;
+use Rioter\Logger\Adapters\FileAdapter;
+use Rioter\Logger\Logger;
 
 /**
  * Mailer transport abstract class.
@@ -14,15 +16,20 @@ abstract class AbstractTransport
 
     abstract public function send(Message $message, array $config);
 
+    /**
+     *  Create a logger. Logging level is 'info' into file 'log.txt'
+     *
+     */
     public function __construct()
     {
-        $this->fileAdapter = new \Rioter\Logger\Adapters\FileAdapter('log.txt');
-        var_dump($this->fileAdapter);
+        $this->fileAdapter = new FileAdapter('log.txt');
         $this->fileAdapter->setAdapterName('fileAdapter');
-
-        $this->logger = new \Rioter\Logger\Logger($this->fileAdapter);
+        $this->logger = new Logger($this->fileAdapter);
     }
 
+    /**
+     * @param string $infoMessage
+     */
     public function log($infoMessage)
     {
         $this->logger->info(strip_tags($infoMessage), array());

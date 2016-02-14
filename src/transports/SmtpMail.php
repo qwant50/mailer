@@ -58,11 +58,8 @@ class SmtpMail extends AbstractTransport
     public function send(Message $message, array $config)
     {
         $this->config = $config;
-        if (!$config['host']) {
-            throw new MailerException("Error mail send: Host isn\'t defined");
-        }
-        if (!$config['port']) {
-            throw new MailerException("Error mail send: Port isn\'t defined");
+        if (!$message->mailTo) {
+            throw new MailerException("Error mail send: 'RCPT TO' isn\'t defined");
         }
         $errno = $errstr = '';
         if (!$this->connect = fsockopen($config['host'], $config['port'], $errno, $errstr, 30)) {
@@ -99,6 +96,7 @@ class SmtpMail extends AbstractTransport
             $this->sendCommand('RCPT TO: <' . $message->mailTo . '>');
 
             $this->sendCommand('DATA');
+
 
             foreach ($message->headers as $key => $header):
                 $this->sendCommand($key . ': ' . $header);

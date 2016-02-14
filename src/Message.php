@@ -25,6 +25,7 @@ class Message
     public function setMailTo($value)
     {
         $this->mailTo = $value;
+        $this->addHeader('To', $value);
         return $this;
     }
 }
