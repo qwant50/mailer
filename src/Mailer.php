@@ -3,9 +3,6 @@
 
 namespace Qwant;
 
-use Qwant\transports\SmtpMail;
-use Qwant\transports\PhpMail;
-
 class Mailer
 {
 
@@ -31,12 +28,11 @@ class Mailer
      */
     public function send(Message $message)
     {
-        if ('smtp' == $this->config['transport']) {
-            $transport = new SmtpMail();
-        } elseif ('mail' == $this->config['transport']) {
-            $transport = new PhpMail();
+        $adapterClass = 'Qwant\\transports\\' . $this->config['transport'];
+        if (!class_exists($adapterClass) || !is_subclass_of($adapterClass, 'Qwant\\transports\\AbstractTransport')) {
+            throw new MailerException("Transport `" . $this->config['transport'] . "` unknown.");
         } else {
-            throw new MailerException("Transport '. $this->config['transport'] . ' unknown.");
+            $transport = new $adapterClass;
         }
         return $transport->send($message, $this->config);
     }

@@ -6,7 +6,7 @@ use Qwant\Message;
 use Qwant\MailerException;
 
 
-class SmtpMail extends AbstractTransport
+class SmtpTransport extends AbstractTransport
 {
     private $config;
     const EOL = "\r\n";

@@ -5,7 +5,7 @@ namespace Qwant\transports;
 use Qwant\Message;
 
 
-class PhpMail extends AbstractTransport
+class PhpMailTransport extends AbstractTransport
 {
     const EOL = "\r\n";
 

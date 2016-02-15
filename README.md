@@ -30,7 +30,7 @@ to the require section of your composer.json.
 
 ```php
 return [
-    'transport' => 'smtp',
+    'transport' => 'SmtpTransport',
     'host' => 'smtp.domain.com',
     'port' => 587,
     'smtp_username' => 'username',

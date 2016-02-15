@@ -30,6 +30,7 @@ $message->addHeader('Error-to', 'sergeyhdd@mail.ru')
 $mailer = new Mailer($conf->getData('mailer'));
 
 if ($mailer->send($message)) {
+    echo 'Success';
     // Success
 } else {
     // Error
