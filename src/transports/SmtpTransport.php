@@ -36,17 +36,17 @@ class SmtpTransport extends AbstractTransport
      *
      * @param string $command
      * @return string mixed  Answer from a remote server
+     * @throws MailerException
      */
     private function sendCommand($command)
     {
         $this->echoInfo('<span style="color : green">' . htmlspecialchars($command) . '</span><br>');
-        if ($this->connect) {
-            fputs($this->connect, $command . self::EOL);
-            $this->getLines();
-            $this->echoInfo($this->lastLines . '<br>');
-        } else {
-            $this->echoInfo('<span style="color : red">connection lost!</span>');
+        if (!is_resource($this->connect)) {
+            throw new MailerException('Connection is bad');
         }
+        fputs($this->connect, $command . self::EOL);
+        $this->getLines();
+        $this->echoInfo($this->lastLines . '<br>');
         return $this->lastLines;
     }
 

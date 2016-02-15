@@ -14,7 +14,7 @@
  */
 
 return [
-    'transport' => 'smtp',
+    'transport' => 'SmtpTransport',
     'host' => '127.0.0.1',
     'port' => 587,
     'smtp_username' => '',
