@@ -3,6 +3,11 @@
 
 namespace Qwant;
 
+/**
+ * Class Mailer
+ * @package Qwant
+ * @author   Sergey Malahov
+ */
 class Mailer
 {
 

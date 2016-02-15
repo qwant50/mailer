@@ -4,10 +4,13 @@ namespace Qwant\transports;
 
 use Qwant\Message;
 
-
+/**
+ * Class PhpMailTransport
+ * @package Qwant\transports
+ * @author   Sergey Malahov
+ */
 class PhpMailTransport extends AbstractTransport
 {
-    const EOL = "\r\n";
 
     /**
      * @param Message $message

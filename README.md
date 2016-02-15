@@ -18,7 +18,7 @@ php composer.phar require "qwant50/mailer"
 or add
 
 ```json
-"qwant50/mailer": "~2.0.*"
+"qwant50/mailer": "~3.0.*"
 ```
 
 to the require section of your composer.json.

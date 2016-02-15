@@ -3,6 +3,11 @@
 namespace Qwant;
 
 
+/**
+ * Class Message
+ * @package Qwant
+ * @author   Sergey Malahov
+ */
 class Message
 {
 

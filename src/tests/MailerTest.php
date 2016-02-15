@@ -35,7 +35,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testGoodConfigurationMailTransport()
     {
         ob_start();
-        $conf = new Config(dirname(dirname(__DIR__))  . '/src/configs/');
+        $conf = new Config(dirname(dirname(__DIR__)) . '/src/configs/');
 
         $message = new Message();
         // This is optional headers for example only
@@ -47,7 +47,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->setMailTo('qwantonline@gmail.com');  // mailTo MUST!
 
         $data = $conf->getData('mailer');
-        $data['transport']= 'mail';
+        $data['transport'] = 'PhpMailTransport';
         $mailer = new Mailer($data);
 
         $this->assertEquals(true, $mailer->send($message));

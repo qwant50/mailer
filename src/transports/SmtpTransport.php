@@ -5,11 +5,14 @@ namespace Qwant\transports;
 use Qwant\Message;
 use Qwant\MailerException;
 
-
+/**
+ * Class SmtpTransport
+ * @package Qwant\transports
+ * @author   Sergey Malahov
+ */
 class SmtpTransport extends AbstractTransport
 {
     private $config;
-    const EOL = "\r\n";
     private $lastLines;
     private $connect;
     private $timeLimit = 2;

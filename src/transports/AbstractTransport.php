@@ -8,9 +8,12 @@ use Rioter\Logger\Logger;
 
 /**
  * Mailer transport abstract class.
+ *
+ * @author   Sergey Malahov
  */
 abstract class AbstractTransport
 {
+    const EOL = "\r\n";
     private $fileAdapter;
     private $logger;
 
