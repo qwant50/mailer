@@ -25,7 +25,7 @@ class Mailer
     }
 
     /**
-     * Adapter for selecting a transport
+     * Adapter for selected a transport
      *
      * @param Message $message
      * @return bool

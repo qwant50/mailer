@@ -22,7 +22,7 @@ class PhpMailTransport extends AbstractTransport
         $subject = '';
         $preparedHeaders = '';
         foreach ($message->headers as $key => $header):
-            if (strtolower(trim($key)) == 'subject') {
+            if (strtolower(trim($key)) === 'subject') {
                 $subject = $header;
             } else {
                 $preparedHeaders .= $key . ': ' . $header . self::EOL;
