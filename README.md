@@ -43,6 +43,9 @@ return [
 ####2. Set some message headers. "RECOMMENDED"
 
 ```php
+use Qwant\Mailer;
+use Qwant\Message;
+
 $message = new Message();
 
 $message->addHeader('Error-to', 'example@domain.com')

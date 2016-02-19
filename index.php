@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Qwant
- * Date: 25-Jan-16
- * Time: 21:57
+ *  Skeleton application
  */
 
 use Qwant\Config;
@@ -17,14 +14,15 @@ $loader = require __DIR__ . '/vendor/autoload.php';
 
 $conf = new Config(__DIR__ . '/src/configs/');
 
+// Create a new message
 $message = new Message();
 // This is optional headers for example only
 $message->addHeader('Error-to', 'sergeyhdd@mail.ru')
     ->addHeader('Subject', 'Must to WORK!')
     ->addHeader('From', 'sergeyhdd@mail.ru')  // strongly recommend
-    ->addHeader('Content-Type', 'text/html; charset=UTF-8')
+    ->addHeader('Content-Type', 'text/plain; charset=UTF-8')
     ->setBody('Content-Type and charset added.')
-    ->setMailTo('qwantonline@gmail.com');  // mailTo MUST!
+    ->setMailTo('web-PFUSOU@mail-tester.com');  // mailTo MUST!
 
 // Use information about the transport from a config file
 $mailer = new Mailer($conf->getData('mailer'));
