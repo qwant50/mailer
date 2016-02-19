@@ -10,9 +10,10 @@ namespace Qwant;
  */
 class Mailer
 {
-
+    /**
+     * @var array
+     */
     private $config;
-
 
     /**
      * Mailer constructor. Set config data
