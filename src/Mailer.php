@@ -33,7 +33,7 @@ class Mailer
      */
     public function send(Message $message)
     {
-        $adapterClass = 'Qwant\\transports\\' . $this->config['transport'];
+        $adapterClass = 'Qwant\\transports\\' . ucfirst($this->config['transport']);
         if (!class_exists($adapterClass) || !is_subclass_of($adapterClass, 'Qwant\\transports\\AbstractTransport')) {
             throw new MailerException("Transport `" . $this->config['transport'] . "` unknown.");
         } else {
