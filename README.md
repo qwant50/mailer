@@ -1,7 +1,7 @@
-ITCourses framework mailer component README
+Jazz framework mailer component README
 ============
 
-**ITCourses framework mailer component**
+**Jazz framework mailer component**
 
 
 
